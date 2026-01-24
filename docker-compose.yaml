@@ -29,16 +29,17 @@ services:
       - /var/run/tappd.sock:/var/run/tappd.sock
       - ./characters:/app/characters
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
-      - OLLAMA_API_ENDPOINT=http://ollama:11434
-      - SERVER_PORT=${SERVER_PORT}
-      - POSTGRES_URL=${POSTGRES_URL}
-      - EVM_CHAINS=${EVM_CHAINS}
-      - BIRDEYE_API_KEY=${BIRDEYE_API_KEY}
-      - DISCORD_APPLICATION_ID=${DISCORD_APPLICATION_ID}
-      - DISCORD_API_TOKEN=${DISCORD_API_TOKEN}
+      SERVER_PORT: "3000"
+      NODE_ENV: "development"
+
+      MODEL_PROVIDER: "litellm"
+      MODEL_NAME: "gemini/gemini-1.5-flash"
+      GEMINI_API_KEY: "${GEMINI_API_KEY}"
+
+      EMBEDDING_PROVIDER: "ollama"
+      EMBEDDING_MODEL: "nomic-embed-text:latest"
+
+      POSTGRES_URL: "postgres://postgres:postgres@postgres:5432/eliza"
     ports:
       - '3000:3000'
       - '50000-50100:50000-50100/udp'
