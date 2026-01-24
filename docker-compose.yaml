@@ -27,6 +27,7 @@ services:
     command: bun run start
     volumes:
       - /var/run/tappd.sock:/var/run/tappd.sock
+      - ./characters:/app/characters
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
