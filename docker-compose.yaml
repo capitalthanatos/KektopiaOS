@@ -30,6 +30,8 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
+      - OLLAMA_API_ENDPOINT=http://ollama:11434
       - SERVER_PORT=${SERVER_PORT}
       - POSTGRES_URL=${POSTGRES_URL}
       - EVM_CHAINS=${EVM_CHAINS}
@@ -42,6 +44,24 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      ollama:
+        condition: service_healthy
+    restart: always
+    networks:
+      - eliza-network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     restart: always
     networks:
       - eliza-network
@@ -52,3 +72,4 @@ networks:
 
 volumes:
   postgres-data:
+  ollama-data:
